@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Collections{% endblock %}
+
+{% load static %}
+
+{% block javascript %}
+  <script src={% static "js/show_books.js" %}></script>
+  <script src={% static "js/search_book.js" %}></script>
+  <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+    }
+  </script>
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mt-3">Collections</h1>
+    {% if collections %}
+    <h3 class="text-center mt-5">Select collection</h3>
+    <div class="d-flex justify-content-center">
+      <div class="d-flex p-2">
+        <select class="form-select js-collection-url">
+          <option selected disabled value="">Select collection</option>
+          {% for collection in collections %}
+            <option value="{% url 'add_book' collection.id %}" data-collection-id="{{ collection.id }}">{{ collection.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <i><p class="text-center">Choose the collection you're adding items to.</p></i>
+    <div class="d-flex justify-content-center">
+      <button type="button" class="btn btn-primary js-collection-books" data-update-src={% static "js/update_book.js" %} data-delete-src={% static "js/delete_book_from_collection.js" %} data-collection-src={% static "js/close_collection.js" %}>Show books in collection</button>
+    </div>
+    {% include "collection/search.html" with search_form=form %}
+    <div class="container" id="search-result">
+    </div>
+    {% else %}
+    <p>You don't have any collections yet.</p>
+    {% endif %}
+
+    <div class="modal fade" id="modal-book">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+{% endblock %}

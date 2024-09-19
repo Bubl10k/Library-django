@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Manage collections{% endblock %}
+
+{% block javascript %}
+  <script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+      }
+  </script>
+  <script src={% static "js/add_collection.js" %}></script>
+  <script src={% static "js/update_collection.js" %}></script>
+  <script src={% static "js/delete_collection.js" %}></script>
+{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mt-3">Collections</h1>
+    <div class="d-flex flex-column mb-3 align-items-center pt-5 js-collection-content">
+        {% for collection in collections %}
+            <div class="card mb-3" style="width: 1000px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ collection.title }}</h5>
+                    <div class="three-dots-container-collection">
+                        <div class="dropdown">
+                          <a class="btn btn-outline-dark dropdown-custom" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                              <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+                            </svg>
+                          </a>
+                        
+                          <ul class="dropdown-menu">
+                            <li><a class="dropdown-item update-btn" data-update-url={% url "update_collection" collection.pk %}>Rename</a></li>
+                            <li><a class="dropdown-item delete-btn" data-delete-url={% url "delete_collection" collection.pk %}>Delete</a></li>
+                          </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}        
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+        <form method="get" action="{% url "add_collection" %}" class="js-add-collection">
+            {% for field in form %}
+                <div class="mb-3">
+                    <h3 class="text-center mt-4">Collection title</h3>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <p class="help-text">{{ field.help_text }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="d-flex justify-content-center mt-3">
+                <button type="submit" class="btn btn-primary">Create collection</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal fade" id="modal-book">
+        <div class="modal-dialog">
+          <div class="modal-content">
+          </div>
+      </div>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% load static %}
+
+{% block javascript %}
+  <script src="{% static "js/favorite_list.js" %}"></script>
+  <script src="{% static "js/reading_stats.js" %}"></script>
+{% endblock javascript %}
+
+{% block content %}
+<section class="h-100 gradient-custom-2">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center">
+        <div class="col col-lg-9 col-xl-8">
+          <div class="card">
+            <div class="rounded-top text-white d-flex flex-row" style="background-color: #F2CC8F; height:200px;">
+              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+                <img src="{% if profile.image %}{{ profile.image.url }}{% else %}{% static "img/default-avatar-photo.jpg" %}{% endif %}"
+                  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                  style="width: 130px; z-index: 1">
+                <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-dark text-body" data-mdb-ripple-color="dark" style="z-index: 1;">
+                  <a href="{% url 'profile_edit' profile.pk %}">Edit profile</a>
+                </button>
+              </div>
+              <div class="ms-3" style="margin-top: 130px; color: black;">
+                <h5>{{ profile.firstname }} {{ profile.lastname }}</h5>
+              </div>
+            </div>
+            <div class="p-4 text-black bg-body-tertiary">
+              <div class="d-flex justify-content-end text-center py-1 text-body">
+              {% with user=profile.book_user %}
+                <div>
+                  <p class="mb-1 h5">{{ user.pages_read }}</p>
+                  <p class="small text-muted mb-0">Pages reads</p>
+                </div>
+                <div class="px-3">
+                  <p class="mb-1 h5">{{ user.current_page }}</p>
+                  <p class="small text-muted mb-0">Current page</p>
+                </div>
+              {% endwith %}
+              </div>
+            </div>
+            <div class="card-body p-4 text-black">
+              <div class="mb-5  text-body">
+                <p class="lead fw-normal mb-1">About</p>
+                <div class="p-4 bg-body-tertiary">
+                  {% if not profile.bio %}
+                    <p class="mb-0">No bio...</p>
+                  {% else %}
+                    {{ profile.bio }}
+                  {% endif %}
+                </div>
+              </div>
+              <div>
+                <canvas id="myChart" width="400" height="200" data-api-url="{% url "reading_stats_api" profile.book_user.id %}"></canvas>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-4 text-body">
+                <p class="lead fw-normal mb-0">Favorites books</p>
+                <p class="mb-0"><a href="{% url "get_favorites" profile.pk %}" class="text-muted show-all">Show all</a></p>
+              </div>
+              <div class="row g-2 books-container unvisible">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% for collection in collections %}
+    <div class="card mb-3 js-collection-content" style="width: 1000px;">
+        <div class="card-body">
+            <h5 class="card-title">{{ collection.title }}</h5>
+            <div class="three-dots-container-collection">
+                <div class="dropdown">
+                  <a class="btn btn-outline-dark dropdown-custom" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                      <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+                    </svg>
+                  </a>
+                
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item update-btn" data-update-url={% url "update_collection" collection.pk %}>Rename</a></li>
+                    <li><a class="dropdown-item delete-btn" data-delete-url={% url "delete_collection" collection.pk %}>Delete</a></li>
+                  </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

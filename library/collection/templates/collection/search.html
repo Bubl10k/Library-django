@@ -1,0 +1,26 @@
+{% comment %} <div class="d-flex justify-content-center mt-3">
+  <div>
+    <p class="mt-2 text-center" style="margin-bottom: 0;">Search for Books</p>
+  </div>
+  <div>
+    <form method="post" class="p-2 seach-form" data-search-url="{% url "search_books" %}">
+      {{ search_form.as_p }}
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+  </div>
+</div> {% endcomment %}
+
+<div>
+  <h3 class="text-center mt-4">Search for Books</h3>
+  <div class="d-flex justify-content-center mt-3">
+    <form method="post" class="p-2 seach-form" data-search-url="{% url "search_books" %}">
+      {{ search_form.as_p }}
+      {% csrf_token %}
+      <i><p class="text-center">Search by keyword</p></i>
+      <div class="d-flex justify-content-center mt-3">
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+  </div>
+</div>

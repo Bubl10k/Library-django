@@ -1,0 +1,17 @@
+{% load static %}
+
+<form class="js-delete-collection-form" data-book-id="{{ collection.pk }}" action={% url "delete_collection" collection.pk %}>
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="staticBackdropLabel">Confirm collection deletion</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    Are you sure you want to delete the collection <b>{{ collection.title }}</b>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary js-confirm-delete">Delete</button>
+  </div>
+</form>
+
+

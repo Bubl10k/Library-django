@@ -1,0 +1,22 @@
+{% load widget_tweaks %}
+
+<form method="post" action="{% url "add_book_collection" book.pk  %}" class="js-collection-book-form">
+    {% csrf_token %}
+    <div class="modal-header">
+      <h4 class="modal-title">Select collection</h4>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+    {% for field in form %}
+      <div class="form-group{% if field.errors %} has-error{% endif %}">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {% render_field field class="form-control" %}
+      {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
+      {% endfor %}
+    {% endfor %}
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+      <button type="submit" class="btn btn-primary js-book-create-form">Submit</button>
+    </div>
+</form>

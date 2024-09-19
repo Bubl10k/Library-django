@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Profile list{% endblock %}
+
+{% load static %}
+
+{% block javascript %}
+  <script>
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+    }
+  </script>
+  <script src="{% static 'js/user_follow.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+  <div class="btn-group mt-5" style="margin-left:215px;">
+    <a href="{% url "profile_list" %}" class="btn btn-primary {% if not follow %}active{% endif %}" aria-current="page">All Users</a>
+    <a href="{% url "profile_list_following" %}" class="btn btn-primary {% if follow %}active{% endif %}">Followed</a>
+  </div>
+  <div class="container mt-5">
+      <div class="row row-cols-1 row-cols-md-2 g-3">
+          {% for profile in profiles %}
+              <div class="col">
+                  <div class="card" style="border-radius: 15px;width: 600px;">
+                    <div class="card-body p-4">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0">
+                          <a href="#">
+                            <img src="{% if profile.image %}{{ profile.image.url }}{% else %}{% static "img/default-avatar-photo.jpg" %}{% endif %}"
+                            alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                            style="width: 130px; z-index: 1">
+                          </a>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                          <a href="{% url "profile_detail_other" profile.pk  %}" style="color: #000; text-decoration: none">
+                            <h5 class="mb-1">{{ profile.firstname }} {{ profile.lastname }}</h5>
+                          </a>
+                          <p class="mb-2 pb-1">{% if profile.book_user.user.is_superuser %}Admin{% else %}Reader{% endif %}</p>
+                          <div class="d-flex justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary">
+                            <div>
+                              <p class="small text-muted mb-1">Books</p>
+                              <p class="mb-0">{{ profile.book_user.books_read.count }}</p>
+                            </div>
+                            <div class="px-3">
+                              <p class="small text-muted mb-1">Followers</p>
+                              <p class="mb-0 follower-count-{{ profile.book_user.user.id }}">{{ profile.book_user.followers.count }}</p>
+                            </div>
+                            <div>
+                              <p class="small text-muted mb-1">Pages read</p>
+                              <p class="mb-0">{{ profile.book_user.pages_read }}</p>
+                            </div>
+                          </div>
+                          <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary flex-grow-1"><a href="{% url "user_follow" %}" class="follow-button" data-user-id="{{ profile.book_user.user.id }}" data-action={% if profile.book_user.user.bookuser in request.user.bookuser.following.all %}"Unfollow"{% else %}"Follow"{% endif %} style="color: white; text-decoration: none">{% if profile.book_user.user.bookuser in request.user.bookuser.following.all %}Unfollow{% else %}Follow{% endif %}</a></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          {% endfor %}
+      </div>
+  </div>
+{% endblock %}
