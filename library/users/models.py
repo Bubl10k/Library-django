@@ -17,9 +17,7 @@ class Profile(models.Model):
                                   blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    objects = models.Manager()
     slug = models.SlugField(null=False)
-    objects = models.Manager()
     
     class Meta:
         ordering = ['firstname']
@@ -41,7 +39,6 @@ class ReadingStats(models.Model):
     year = models.IntegerField()
     month = models.IntegerField()
     pages_read = models.IntegerField(default=0)
-    objects = models.Manager()
     
     class Meta:
         verbose_name_plural = 'Reading Stats'
@@ -60,7 +57,6 @@ class Contact(models.Model):
                                 on_delete=models.CASCADE,
                                 related_name='rel_to_set')
     created = models.DateTimeField(auto_now_add=True)
-    objects = models.Manager()
     
     class Meta:
         indexes = [

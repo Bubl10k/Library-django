@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 from books.models import BookUser
 from .serializers import ReadingStatsSerializer
-from users.forms import EditProfileForm
+from .forms import EditProfileForm, UserRegistrationForm
 
 from .models import Contact, Profile, ReadingStats
 
@@ -93,6 +93,23 @@ def get_favorites(request: HttpRequest, pk: int) -> JsonResponse:
     return JsonResponse({'html_favorite': render_to_string('users/js/favorite_list_js.html', 
                                              {'books': books},
                                              request=request) })
+
+
+def register(request):
+    if request.method == 'POST':
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            print('asd')
+            new_user = user_form.save(commit=False)
+            new_user.set_password(user_form.cleaned_data['password'])
+            new_user.save()
+            book_user = BookUser.objects.create(user=new_user)
+            profile = Profile.objects.create(book_user=book_user)
+            return JsonResponse({'status': 'ok'})
+        else:
+            return JsonResponse({'status': 'error', 'errors': user_form.errors})
+    return render(request,'registration/registration_form.html')
+        
     
 
 @api_view(['GET'])

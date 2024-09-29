@@ -12,7 +12,6 @@ class Collection(models.Model):
     user = models.ForeignKey(User, 
                              on_delete=models.CASCADE, 
                              related_name='collections')
-    objects = models.Manager()
     
     class Meta:
         ordering = ['title']

@@ -19,7 +19,6 @@ class BookUser(models.Model):
                                        through=Contact,
                                        related_name='followers',
                                        symmetrical=False)
-    objects = models.Manager()
     
     def __str__(self) -> str:
         return f'Book user: {self.user.username}'

@@ -1,3 +1,4 @@
+from django.conf.urls import include
 from django.urls import path
 from django.views.decorators.cache import cache_page
 
@@ -5,6 +6,11 @@ from . import views
 
 
 urlpatterns = [
+    # auth urls
+    path('', include('django.contrib.auth.urls')),
+    path('register/', views.register, name='register'),
+     
+    # profile urls
     path('profiles/', views.profile_list, name='profile_list'),
     path('profiles/following/', views.profile_list, 
          name='profile_list_following', kwargs={'follow': True}),
