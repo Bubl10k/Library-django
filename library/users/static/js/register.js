@@ -1,4 +1,4 @@
-const mySiteUrl = '/';
+const mySiteUrl = '/library/';
 
 (function () {
     document.querySelector('.js-register-form').addEventListener('submit', function (event) {
@@ -12,7 +12,6 @@ const mySiteUrl = '/';
             },
             body: formData
         }
-
         fetch(this.action, options)
         .then(response => response.json())
         .then(data => {

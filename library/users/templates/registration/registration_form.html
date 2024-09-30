@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 
 {% block title %}Register{% endblock %}
 
@@ -34,41 +35,28 @@
               <div class="card-body p-5">
                 <h2 class="text-uppercase text-center mb-5">Create an account</h2>
                 <form method="post" action="{% url "register" %}" class="js-register-form">
-                  <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="text" id="form3Example1cg" name="username" class="form-control form-control-lg" />
-                    <label class="form-label" for="form3Example1cg">Your Name</label>
-                  </div>
-  
-                  <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="email" id="form3Example3cg" name="email" class="form-control form-control-lg" />
-                    <label class="form-label" for="form3Example3cg">Your Email</label>
-                  </div>
-  
-                  <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="password" id="form3Example4cg" name="password" class="form-control form-control-lg" />
-                    <label class="form-label" for="form3Example4cg">Password</label>
-                  </div>
-  
-                  <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="password" id="form3Example4cdg" name="password2" class="form-control form-control-lg" />
-                    <label class="form-label" for="form3Example4cdg">Repeat your password</label>
-                  </div>
-  
-                  <div class="d-flex justify-content-center">
+                  {% for field in form %}
+                  <div class="form-group{% if field.errors %} has-error{% endif %}">
+                    <label for="{{ field.id_for_label }}" class="mb-1">{{ field.label }}</label>
+                    <div class="mb-3">
+                      {% render_field field class="form-control" %}
+                    </div>
+                    {% for error in field.errors %}
+                      <p class="help-block">{{ error }}</p>
+                    {% endfor %}
+                  {% endfor %}
+                  <div class="d-flex justify-content-center mt-4">
                     <button type="submit" data-mdb-button-init
                       data-mdb-ripple-init class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
                   </div>
-  
                   <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="{% url "login" %}"
                       class="fw-bold text-body"><u>Login here</u></a></p>
-  
                 </form>
-
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
+</section>
 {% endblock %}

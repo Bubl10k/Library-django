@@ -31,7 +31,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# auth
 LOGIN_REDIRECT_URL = 'book_list'
+LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 

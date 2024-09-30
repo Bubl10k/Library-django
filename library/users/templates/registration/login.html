@@ -1,9 +1,45 @@
 {% extends "base.html" %}
 
+{% load widget_tweaks %}
+
 {% block title %}Log-in{% endblock %}
 
 {% block content %}
-    <div class="login-content pt-5 ">
+<section class="vh-100 bg-image">
+    <div class="mask d-flex align-items-center h-20 mt-5">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+                <h2 class="text-uppercase text-center mb-5">Log-in</h2>
+                <form method="post" action="{% url "login" %}" >
+                  {% for field in form %}
+                  {% csrf_token %}
+                  <div class="form-group{% if field.errors %} has-error{% endif %}">
+                    <label for="{{ field.id_for_label }}" class="mb-1">{{ field.label }}</label>
+                    <div class="mb-3">
+                      {% render_field field class="form-control" %}
+                    </div>
+                    {% for error in field.errors %}
+                      <p class="help-block">{{ error }}</p>
+                    {% endfor %}
+                  {% endfor %}
+                  <div class="d-flex justify-content-center mt-4 mb-3">
+                    <input type="hidden" name="next" value="{{ next }}" />
+                    <button type="submit" data-mdb-button-init
+                      data-mdb-ripple-init class="btn btn-success btn-block btn-lg text-body">Log-in</button>
+                  </div>
+                  <p>To register, go to <a href="{% url "register" %}">registration page</a>.</p>   
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+    {% comment %} <div class="login-content pt-5 ">
         <h1>Log-in</h1>
         {% if form.errors %}
             <p>
@@ -26,6 +62,7 @@
             <a href="{% url "password_reset" %}">
             Forgotten your password?
             </a>
-        </p>        
-    </div>
+        </p>
+        <p>To register, go to <a href="{% url "register" %}">registration page</a>.</p>        
+    </div> {% endcomment %}
 {% endblock %}

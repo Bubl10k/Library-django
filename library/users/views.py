@@ -103,15 +103,14 @@ def register(request):
             new_user = user_form.save(commit=False)
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
-            book_user = BookUser.objects.create(user=new_user)
-            profile = Profile.objects.create(book_user=book_user)
             return JsonResponse({'status': 'ok'})
         else:
             return JsonResponse({'status': 'error', 'errors': user_form.errors})
-    return render(request,'registration/registration_form.html')
-        
-    
+    user_form = UserRegistrationForm()
+    return render(request,'registration/registration_form.html',
+                  {'form': user_form})
 
+    
 @api_view(['GET'])
 def reading_stats(request: HttpRequest, pk: int) -> Response:
     user = get_object_or_404(BookUser, pk=pk)
